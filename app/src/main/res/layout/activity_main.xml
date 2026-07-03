@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EEF8F0"
+    android:background="#FFF3E0"
     android:fillViewport="true">
 
     <LinearLayout
@@ -14,33 +13,30 @@
         android:padding="20dp">
 
         <!-- HEADER -->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="🌿 WakeUp Brain"
-            android:textColor="#1B5E20"
+            android:text="🌅 Morning Routine"
+            android:textColor="#E64A19"
             android:textStyle="bold"
-            android:textSize="30sp" />
+            android:textSize="32sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Discipline Alarm Clock"
-            android:textColor="#4CAF50"
-            android:textSize="15sp" />
-
-
+            android:text="Build your discipline today!"
+            android:textColor="#D84315"
+            android:textStyle="italic"
+            android:textSize="16sp" />
 
         <!-- TIME -->
-
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            app:cardCornerRadius="28dp"
-            app:cardElevation="4dp">
+            android:layout_marginTop="24dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,8 +47,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="⏰ Alarm Time"
-                    android:textColor="#1B5E20"
+                    android:text="⏰ Set Your Time"
+                    android:textColor="#BF360C"
                     android:textStyle="bold"
                     android:textSize="18sp" />
 
@@ -68,16 +64,13 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-
-
         <!-- RINGTONE -->
-
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            app:cardCornerRadius="28dp"
-            app:cardElevation="4dp">
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -88,8 +81,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🎵 Ringtone"
-                    android:textColor="#1B5E20"
+                    android:text="🎵 Wake Up Sound"
+                    android:textColor="#BF360C"
                     android:textStyle="bold"
                     android:textSize="18sp" />
 
@@ -98,20 +91,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:layout_marginTop="14dp"
-                    android:text="Choose Music"
+                    android:text="Select Audio"
                     android:textAllCaps="false"
                     android:textStyle="bold"
                     android:textColor="#FFFFFF"
-                    android:backgroundTint="#43A047"
-                    app:cornerRadius="18dp" />
+                    android:backgroundTint="#F4511E"
+                    app:cornerRadius="12dp" />
 
                 <TextView
                     android:id="@+id/tvMusicName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="No music selected"
-                    android:textColor="#558B2F"
+                    android:text="Default Ringtone"
+                    android:textColor="#FF7043"
                     android:textSize="14sp"
                     android:textStyle="italic" />
 
@@ -119,16 +112,13 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-
-
         <!-- REPEAT -->
-
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            app:cardCornerRadius="28dp"
-            app:cardElevation="4dp">
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -139,8 +129,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🔁 Repeat"
-                    android:textColor="#1B5E20"
+                    android:text="🔁 Active Days"
+                    android:textColor="#BF360C"
                     android:textStyle="bold"
                     android:textSize="18sp" />
 
@@ -152,33 +142,13 @@
                     android:columnCount="4"
                     android:useDefaultMargins="true">
 
-                    <CheckBox
-                        android:id="@+id/cbMon"
-                        android:text="Mon" />
-
-                    <CheckBox
-                        android:id="@+id/cbTue"
-                        android:text="Tue" />
-
-                    <CheckBox
-                        android:id="@+id/cbWed"
-                        android:text="Wed" />
-
-                    <CheckBox
-                        android:id="@+id/cbThu"
-                        android:text="Thu" />
-
-                    <CheckBox
-                        android:id="@+id/cbFri"
-                        android:text="Fri" />
-
-                    <CheckBox
-                        android:id="@+id/cbSat"
-                        android:text="Sat" />
-
-                    <CheckBox
-                        android:id="@+id/cbSun"
-                        android:text="Sun" />
+                    <CheckBox android:id="@+id/cbMon" android:text="Mon" />
+                    <CheckBox android:id="@+id/cbTue" android:text="Tue" />
+                    <CheckBox android:id="@+id/cbWed" android:text="Wed" />
+                    <CheckBox android:id="@+id/cbThu" android:text="Thu" />
+                    <CheckBox android:id="@+id/cbFri" android:text="Fri" />
+                    <CheckBox android:id="@+id/cbSat" android:text="Sat" />
+                    <CheckBox android:id="@+id/cbSun" android:text="Sun" />
 
                 </GridLayout>
 
@@ -186,16 +156,13 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-
-
         <!-- DIFFICULTY -->
-
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            app:cardCornerRadius="28dp"
-            app:cardElevation="4dp">
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -206,8 +173,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="🧮 Mission Difficulty"
-                    android:textColor="#1B5E20"
+                    android:text="🧮 Math Difficulty"
+                    android:textColor="#BF360C"
                     android:textStyle="bold"
                     android:textSize="18sp" />
 
@@ -221,26 +188,23 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-
-
         <!-- SAVE BUTTON -->
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSetAlarm"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="30dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="32dp"
             android:layout_marginBottom="24dp"
-            android:text="SAVE ALARM"
-            android:textAllCaps="false"
+            android:text="CONFIRM ALARM"
+            android:textAllCaps="true"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:backgroundTint="#2E7D32"
-            app:cornerRadius="20dp"
+            android:backgroundTint="#D84315"
+            app:cornerRadius="16dp"
             app:icon="@android:drawable/ic_lock_idle_alarm"
             app:iconGravity="textStart"
-            app:iconPadding="10dp" />
+            app:iconPadding="12dp" />
 
     </LinearLayout>
 
