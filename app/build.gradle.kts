@@ -3,9 +3,9 @@ import java.util.Date
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
 }
 
-// Lấy số build từ Jenkins, nếu không thấy thì mặc định là 1
 val buildNumber = System.getenv("BUILD_NUMBER")?.toIntOrNull() ?: 1
 
 android {
@@ -28,7 +28,7 @@ android {
 
         versionCode = buildNumber
 
-        // Tự động tạo versionName: 20260704-01
+        // Tự động tạo versionName
         val currentDate = SimpleDateFormat("yyyyMMdd").format(Date())
         val paddedBuildNumber = String.format("%02d", buildNumber)
         versionName = "$currentDate-$paddedBuildNumber"
@@ -69,7 +69,10 @@ android {
 
     buildFeatures {
         viewBinding = true
-        buildConfig = true // Đảm bảo BuildConfig được tạo ra
+        buildConfig = true
+    }
+    kotlinOptions {
+        jvmTarget = "11"
     }
 }
 
@@ -79,6 +82,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.core.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
