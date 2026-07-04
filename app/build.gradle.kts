@@ -1,3 +1,6 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+
 plugins {
     alias(libs.plugins.android.application)
 }
@@ -20,14 +23,20 @@ android {
     // TỰ ĐỘNG: Lấy số bản build từ Jenkins (mặc định là 1 nếu chạy ở máy cá nhân)
     val jenkinsBuildNumber = System.getenv("BUILD_NUMBER")?.toIntOrNull() ?: 1
 
+    // TỰ ĐỘNG: Lấy ngày tháng năm hiện tại (Ví dụ: 20260704)
+    val currentDate = SimpleDateFormat("yyyyMMdd").format(Date())
+
     defaultConfig {
         applicationId = "com.example.myapplication"
         minSdk = 24
         targetSdk = 34
 
-        // TỰ ĐỘNG: Gán giá trị tăng dần theo Jenkins để triệt tiêu cache điện thoại
+        // versionCode giữ nguyên là số để Google Play/Android hiểu được
         versionCode = jenkinsBuildNumber
-        versionName = "1.0.$jenkinsBuildNumber"
+
+        // versionName sẽ ra kết quả dạng: 20260704-01, 20260704-02...
+        val paddedBuildNumber = String.format("%02d", jenkinsBuildNumber) // Thêm số 0 ở đầu nếu build < 10
+        versionName = "$currentDate-$paddedBuildNumber"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,10 +51,12 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     buildFeatures {
         viewBinding = true
     }
@@ -64,6 +75,9 @@ dependencies {
     // Thư viện Room Database
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
+
+    // Lưu ý nhỏ: Nếu code Room Database bằng Kotlin, bạn nên đổi annotationProcessor thành ksp (hoặc kapt)
     annotationProcessor("androidx.room:room-compiler:$room_version")
+
     implementation("com.google.android.material:material:1.12.0")
 }
