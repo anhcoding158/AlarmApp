@@ -14,7 +14,6 @@ android {
 
     signingConfigs {
         create("release") {
-            // Dùng biến môi trường KEYSTORE_FILE, nếu không có thì trỏ file local
             storeFile = file(System.getenv("KEYSTORE_FILE") ?: "my_key.jks")
             storePassword = "12345678"
             keyAlias = "key0"
@@ -45,6 +44,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            // NHẬN CÔNG TẮC TỪ JENKINS (true hoặc false)
+            val isTest = project.hasProperty("IS_TEST_MODE") && project.property("IS_TEST_MODE") == "true"
+            buildConfigField("boolean", "IS_TEST_MODE", "$isTest")
         }
     }
 
@@ -66,6 +69,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true // Đảm bảo BuildConfig được tạo ra
     }
 }
 
