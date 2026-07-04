@@ -5,6 +5,11 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+val manualVersion = "20260704-99"
+
+val buildNumber = System.getenv("BUILD_NUMBER")?.toIntOrNull() ?: 1
+val currentDate = SimpleDateFormat("yyyyMMdd").format(Date())
+
 android {
     namespace = "com.example.myapplication"
     compileSdk = 34
@@ -18,32 +23,28 @@ android {
         }
     }
 
-    // --- CẤU HÌNH VERSION ---
-    // Nếu muốn tự động (theo ngày): để là null
-    // Nếu muốn ép kiểu thủ công: đổi thành ví dụ "20260704-99"
-    val manualVersion: String? = "20260704-99"
-
-    val jenkinsBuildNumber = System.getenv("BUILD_NUMBER")?.toIntOrNull() ?: 1
-    val currentDate = SimpleDateFormat("yyyyMMdd").format(Date())
-
     defaultConfig {
         applicationId = "com.example.myapplication"
         minSdk = 24
         targetSdk = 34
 
-        versionCode = jenkinsBuildNumber
+        versionCode = buildNumber
+        versionName = manualVersion
 
-        // Logic: Nếu manualVersion có giá trị, lấy nó. Không thì lấy tự động.
-        val paddedBuildNumber = String.format("%02d", jenkinsBuildNumber)
-        versionName = manualVersion ?: "$currentDate-$paddedBuildNumber"
+        println("======================================")
+        println("VERSION CODE : $versionCode")
+        println("VERSION NAME : $versionName")
+        println("BUILD NUMBER : $buildNumber")
+        println("======================================")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
             signingConfig = signingConfigs.getByName("release")
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -67,13 +68,15 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    val room_version = "2.6.1"
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
+    val roomVersion = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
     implementation("com.google.android.material:material:1.12.0")
 }
