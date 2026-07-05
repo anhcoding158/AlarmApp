@@ -1,78 +1,101 @@
 pipeline {
     agent any
 
-    // 1. Pipeline Parameters
+    // 1. Tham số Pipeline (Pipeline Parameters)
     parameters {
         booleanParam(
             name: 'IS_TEST_MODE',
             defaultValue: false,
-            description: 'Check to build the application in Test Environment mode.'
+            description: 'Tích chọn để biên dịch (build) ứng dụng cho môi trường Kiểm thử (Test Environment).'
         )
     }
 
-    // 2. Global Environment Variables
+    // 2. Biến môi trường toàn cục (Global Environment Variables)
     environment {
         KEYSTORE_FILE = "C:/Users/Dell/Documents/my_key.jks"
     }
 
-    // 3. Execution Stages
+    // 3. Các giai đoạn thực thi (Execution Stages)
     stages {
-        stage('Checkout Code') {
+        // NÂNG CẤP 1: Tự động đổi tên hiển thị của lượt Build
+        stage('Khởi tạo Pipeline') {
+            steps {
+                script {
+                    def buildMode = params.IS_TEST_MODE ? "TEST" : "RELEASE"
+                    currentBuild.displayName = "#${BUILD_NUMBER} [${buildMode}]"
+                }
+                echo "Đã khởi tạo Pipeline. Chế độ Build: ${params.IS_TEST_MODE ? 'TEST' : 'RELEASE'}"
+            }
+        }
+
+        stage('Kéo mã nguồn (Checkout)') {
             steps {
                 echo '--------------------------------------------------'
-                echo 'Fetching the latest source code from GitHub...'
+                echo 'Đang kéo mã nguồn mới nhất từ kho lưu trữ GitHub...'
                 echo '--------------------------------------------------'
                 checkout scm
             }
         }
 
-        stage('Clean Project') {
+        stage('Dọn dẹp dự án (Clean)') {
             steps {
                 echo '--------------------------------------------------'
-                echo 'Cleaning up the old build directory...'
+                echo 'Đang dọn dẹp không gian làm việc và các tệp build cũ...'
                 echo '--------------------------------------------------'
                 bat 'gradlew.bat clean'
             }
         }
 
-        stage('Run Unit Tests') {
+        // NÂNG CẤP 2: Chạy Android Lint để quét lỗi tĩnh trước khi build
+        stage('Kiểm tra chất lượng code (Lint)') {
             steps {
                 echo '--------------------------------------------------'
-                echo 'Executing automated unit tests...'
+                echo 'Đang phân tích chất lượng mã nguồn và tài nguyên bằng Android Lint...'
+                echo '--------------------------------------------------'
+                // Lệnh này sẽ quét lỗi giao diện, bảo mật, hiệu năng. Nếu có lỗi nghiêm trọng (Fatal), nó sẽ tự động dừng build.
+                bat 'gradlew.bat lintRelease'
+            }
+        }
+
+        stage('Kiểm thử tự động (Unit Tests)') {
+            steps {
+                echo '--------------------------------------------------'
+                echo 'Đang thực thi các kịch bản kiểm thử tự động (Automated Unit Tests)...'
                 echo '--------------------------------------------------'
                 bat 'gradlew.bat test'
             }
         }
 
-        stage('Build & Sign APK') {
+        stage('Biên dịch & Ký số APK') {
             steps {
                 echo '--------------------------------------------------'
-                echo "Compiling and packaging APK. IS_TEST_MODE = ${params.IS_TEST_MODE}"
+                echo "Đang tiến hành biên dịch và đóng gói tệp APK. IS_TEST_MODE = ${params.IS_TEST_MODE}"
                 echo '--------------------------------------------------'
+                // Trình build.gradle của bạn đã tự động lấy System.getenv("BUILD_NUMBER") nên không cần truyền thêm ở đây nữa
                 bat "gradlew.bat assembleRelease -PIS_TEST_MODE=${params.IS_TEST_MODE}"
             }
         }
 
-        stage('Archive Artifacts') {
+        stage('Lưu trữ thành phẩm (Archive)') {
             steps {
                 echo '--------------------------------------------------'
-                echo 'Build successful! Archiving the generated APK files...'
+                echo 'Build thành công! Đang lưu trữ (Archive) các tệp APK thành phẩm...'
                 echo '--------------------------------------------------'
                 archiveArtifacts artifacts: '**/build/outputs/apk/release/*.apk', fingerprint: true
             }
         }
     }
 
-    // 4. Post-build Actions
+    // 4. Xử lý sau khi Build (Post-build Actions)
     post {
         success {
             echo '=================================================='
-            echo ' SUCCESS: The build pipeline completed successfully!'
+            echo " THÀNH CÔNG: Lượt Build #${BUILD_NUMBER} đã hoàn tất xuất sắc!"
             echo '=================================================='
         }
         failure {
             echo '=================================================='
-            echo ' FAILURE: The build pipeline failed. Please check the logs!'
+            echo " THẤT BẠI: Lượt Build #${BUILD_NUMBER} đã gặp lỗi. Vui lòng kiểm tra lại nhật ký (Console Output)!"
             echo '=================================================='
         }
     }
